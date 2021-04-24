@@ -97,8 +97,8 @@ namespace COMP1003Mastermind
 
             }
             else{
-                for(int i = 0;i<q.back;i++){
-                    Console.Write("Guess" + q.back + 1 + ": ");
+                for(int i = 0;i<= q.back;i++){
+                    Console.Write("Guess " + (i+1) + ": ");
                     for(int j= 0; j<N; j++){
                         Console.Write( q.data[q.back][j] + " ");
 
@@ -108,7 +108,7 @@ namespace COMP1003Mastermind
             }
         }
         static bool checkGuess(int[] secret, int[] userGuess,int N,  ref Queue q){
-            int[] guessArray = userGuess;
+            int[] guessArray = cloneArray(userGuess,N);
             int black = 0;
             int white = 0;
             
@@ -140,6 +140,7 @@ namespace COMP1003Mastermind
                 Console.Clear();
                 Console.WriteLine("Correct Game Over");
                 Console.WriteLine("GUESSES \n _________");
+                addToQueue(q, guessArray, N);
                 printQueue(q, N);
                 return true;
             }
@@ -149,7 +150,16 @@ namespace COMP1003Mastermind
           printQueue(q, N);
           return false;
         }
-        
+
+        static int[] cloneArray(int[] userGuess, int N)
+        {
+            int[] clone = new int[N];
+            for(int i= 0; i<N; i++)
+            {
+                clone[i] = userGuess[i];
+            }
+            return clone;
         }
+    }
     }
 
