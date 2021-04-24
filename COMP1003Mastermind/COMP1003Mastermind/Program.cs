@@ -2,6 +2,10 @@
 
 namespace COMP1003Mastermind
 {
+    class Queue {
+        public int back = -1;
+        public int[][] data = new int[100][];
+    }
     class Program
     {
         static void Main(string[] args)
@@ -9,6 +13,8 @@ namespace COMP1003Mastermind
           int N = 0;
           int M = 0;
           bool guess = false;
+          Queue queue = new Queue();
+          
         
           
           while(true){
@@ -32,13 +38,13 @@ namespace COMP1003Mastermind
           
 
           }
-         
-         
+
+            
           int[] secret = createNewArray(N,M);
           printArray(secret,N);
           while(!guess){
               int[] userGuess = getUserInput(N);
-              guess = checkGuess(secret,userGuess,N);
+              guess = checkGuess(secret,userGuess,N,ref queue);
 
             
           }
@@ -77,11 +83,35 @@ namespace COMP1003Mastermind
             return arr;
         }
 
-        static bool checkGuess(int[] secret, int[] userGuess,int N){
-            
+        static void addToQueue(Queue q, int[] array,int N){
+            q.back += 1;
+            q.data[q.back] = new int[N];
+            for (int i=0; i<N;i++){
+                
+                q.data[q.back][i] = array[i];
+            }
+
+        }
+        static void printQueue(Queue q, int N){
+            if(q.back == -1){
+
+            }
+            else{
+                for(int i = 0;i<q.back;i++){
+                    Console.Write("Guess" + q.back + 1 + ": ");
+                    for(int j= 0; j<N; j++){
+                        Console.Write( q.data[q.back][j] + " ");
+
+                    }
+                    Console.Write("\n");
+                }
+            }
+        }
+        static bool checkGuess(int[] secret, int[] userGuess,int N,  ref Queue q){
+            int[] guessArray = userGuess;
             int black = 0;
             int white = 0;
-         
+            
             for(int i = 0; i<N; i++){
                
                     if (secret[i] == userGuess[i])
@@ -107,11 +137,16 @@ namespace COMP1003Mastermind
             Console.Write("Number of Black Pegs: " + black + " ");
             Console.Write("Number of White Pegs: " + white + "\n");
             if(black == N){
+                Console.Clear();
                 Console.WriteLine("Correct Game Over");
+                Console.WriteLine("GUESSES \n _________");
+                printQueue(q, N);
                 return true;
             }
             
           Console.WriteLine("Incorrect,try again");
+          addToQueue(q,guessArray,N);
+          printQueue(q, N);
           return false;
         }
         
