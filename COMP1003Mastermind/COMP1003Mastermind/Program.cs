@@ -10,10 +10,30 @@ namespace COMP1003Mastermind
           int M = 0;
           bool guess = false;
         
+          
+          while(true){
           Console.Write("Enter how many positions you would like");
-          N = Convert.ToInt32(Console.ReadLine());
-          Console.Write("Enter how many numbers you would like to choose from");
-          M = Convert.ToInt32(Console.ReadLine());
+          if(int.TryParse(Console.ReadLine(),out N))
+          {
+            
+              break;
+          }
+          else  Console.WriteLine("Please only enter numbers!");
+          
+          }
+          while(true){
+               Console.Write("Enter how many numbers you would like to choose from");
+                if(int.TryParse(Console.ReadLine(),out M))
+          {
+            
+              break;
+          }
+          else Console.WriteLine("Please only enter numbers!");
+          
+
+          }
+         
+         
           int[] secret = createNewArray(N,M);
           printArray(secret,N);
           while(!guess){
@@ -22,7 +42,7 @@ namespace COMP1003Mastermind
 
             
           }
-          Console.WriteLine("Correct Game Over");
+          
 
 
 
@@ -75,7 +95,7 @@ namespace COMP1003Mastermind
                             if(secret[i] == userGuess[j])
                             {
                                 white++;
-                               // break;
+                                userGuess[j] = 0;
                             }
                         }
                     }
@@ -84,24 +104,17 @@ namespace COMP1003Mastermind
 
 
             }
-        //white = black - white;
             Console.Write("Number of Black Pegs: " + black + " ");
             Console.Write("Number of White Pegs: " + white + "\n");
             if(black == N){
+                Console.WriteLine("Correct Game Over");
                 return true;
             }
             
-           Console.WriteLine("Incorrect,try again");
-            
-                
-            
+          Console.WriteLine("Incorrect,try again");
           return false;
         }
-        static void printSArray(string[] array,int N){
-            for(int i = 0; i<N; i++){
-                Console.Write(array[i] + " ");
-            }
-        }
+        
         }
     }
 
