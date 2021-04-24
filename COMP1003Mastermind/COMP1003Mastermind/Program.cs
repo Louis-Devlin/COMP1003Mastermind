@@ -6,7 +6,102 @@ namespace COMP1003Mastermind
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+          int N = 0;
+          int M = 0;
+          bool guess = false;
+        
+          Console.Write("Enter how many positions you would like");
+          N = Convert.ToInt32(Console.ReadLine());
+          Console.Write("Enter how many numbers you would like to choose from");
+          M = Convert.ToInt32(Console.ReadLine());
+          int[] secret = createNewArray(N,M);
+          printArray(secret,N);
+          while(!guess){
+              int[] userGuess = getUserInput(N);
+              guess = checkGuess(secret,userGuess,N);
+
+            
+          }
+          Console.WriteLine("Correct Game Over");
+
+
+
+
+          
+
+        
+          
+        }
+        static int[] createNewArray(int N, int M){
+            int[] array = new int[N];
+            Random r = new Random();
+            for (int i = 0; i < N; i++){
+                array[i] = r.Next(1,M);
+            }
+            return array;
+        }
+
+        static void printArray(int[] array,int N){
+            for(int i = 0; i < N; i++){
+                Console.Write(array[i] + " ");
+            }
+            Console.WriteLine("");
+        }
+        
+        static int[] getUserInput(int N){
+            int[] arr = new int[N];
+            for(int i = 0; i < N; i++){
+                Console.Write("Enter Guess " + (i+1) + " ");
+                arr[i] = Convert.ToInt32(Console.ReadLine());
+            }
+            return arr;
+        }
+
+        static bool checkGuess(int[] secret, int[] userGuess,int N){
+            
+            int black = 0;
+            int white = 0;
+         
+            for(int i = 0; i<N; i++){
+               
+                    if (secret[i] == userGuess[i])
+                    {
+                        black++;
+                    }
+                    else
+                    {
+                        for(int j = 0; j < N; j++)
+                        {
+                            if(secret[i] == userGuess[j])
+                            {
+                                white++;
+                               // break;
+                            }
+                        }
+                    }
+
+
+
+
+            }
+        //white = black - white;
+            Console.Write("Number of Black Pegs: " + black + " ");
+            Console.Write("Number of White Pegs: " + white + "\n");
+            if(black == N){
+                return true;
+            }
+            
+           Console.WriteLine("Incorrect,try again");
+            
+                
+            
+          return false;
+        }
+        static void printSArray(string[] array,int N){
+            for(int i = 0; i<N; i++){
+                Console.Write(array[i] + " ");
+            }
+        }
         }
     }
-}
+
