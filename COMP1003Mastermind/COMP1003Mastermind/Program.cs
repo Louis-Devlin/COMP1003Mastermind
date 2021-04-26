@@ -16,19 +16,21 @@ namespace COMP1003Mastermind
           int M = 0;
           
           
-          setup(ref N, ref M);
+          
           
        bool running = true;
        
-          //printArray(secret,N);
-          //Game Loop
+         
+          
          
 
           
-
+        //Game Loop
           while(running)
           {
+              setup(ref N, ref M);
               int[] secret = createNewArray(N,N);
+              printArray(secret,N);
               gameLoop(secret,N);
               running = replay();
           }
@@ -68,7 +70,7 @@ namespace COMP1003Mastermind
             return arr;
         }
 
-        static void addToQueue(Queue q, int[] array,int N){
+        static void addToQueue( ref Queue q, int[] array,int N){
             q.back += 1;
             q.data[q.back] = new int[N];
             for (int i=0; i<N;i++){
@@ -78,18 +80,21 @@ namespace COMP1003Mastermind
 
         }
         static void printQueue(Queue q, int N){
+            
             if(q.back == -1){
-
+                
             }
             else{
-                for(int i = 0;i<q.back;i++){
-                    Console.Write("Guess " + (i+1) + ": ");
-                    for(int j= 0; j<N; j++){
-                        Console.Write( q.data[q.back][j] + " ");
-
+               for (int i = 0; i <= q.back; i++)
+                {
+                    Console.Write("Guess " + (i + 1) + ": ");
+                    for (int j = 0; j < N; j++)
+                    {
+                        Console.Write(q.data[i][j]+" ");
                     }
                     Console.Write("\n");
                 }
+                
             }
         }
         //Checks the user guess and compares it with the secret answer
@@ -112,6 +117,8 @@ namespace COMP1003Mastermind
                             {
                                 white++;
                                 userGuess[j] = 0; //If white peg is found, mark the postion as 0 so it cant count for another number later in the array
+                                break;
+                                
                             }
                         }
                     }
@@ -126,13 +133,13 @@ namespace COMP1003Mastermind
                 Console.Clear();
                 Console.WriteLine("Correct Game Over");
                 Console.WriteLine("GUESSES \n _________");
-                addToQueue(q, guessArray, N);
+                addToQueue(ref q, guessArray, N);
                 printQueue(q, N);
                 return true;
             }
             
           Console.WriteLine("Incorrect,try again");
-          addToQueue(q,guessArray,N);
+          addToQueue(ref q,guessArray,N);
           printQueue(q, N);
           return false;
         }
@@ -162,11 +169,15 @@ namespace COMP1003Mastermind
           
           }
           while(true){
-               Console.Write("Enter how many numbers you would like to choose from");
+               Console.Write("Enter how many numbers you would like to choose from (Please enter a number between 1 and 9");
                 if(int.TryParse(Console.ReadLine(),out M))
           {
+              if(M>9){
+                  break;
+              }
+              else Console.WriteLine("Please only enter a number between 1 and 9");
             
-              break;
+              
           }
           else Console.WriteLine("Please only enter numbers!");
           
