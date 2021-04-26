@@ -3,6 +3,7 @@
 namespace COMP1003Mastermind
 {
     class Queue {
+        //Defines a Queue data structure with jagged array for data store
         public int back = -1;
         public int[][] data = new int[100][];
     }
@@ -10,44 +11,28 @@ namespace COMP1003Mastermind
     {
         static void Main(string[] args)
         {
+            //Setup the game and basic variables/ data structures 
           int N = 0;
           int M = 0;
-          bool guess = false;
-          Queue queue = new Queue();
           
-        
           
-          while(true){
-          Console.Write("Enter how many positions you would like");
-          if(int.TryParse(Console.ReadLine(),out N))
+          setup(ref N, ref M);
+          
+       bool running = true;
+       
+          //printArray(secret,N);
+          //Game Loop
+         
+
+          
+
+          while(running)
           {
-            
-              break;
+              int[] secret = createNewArray(N,N);
+              gameLoop(secret,N);
+              running = replay();
           }
-          else  Console.WriteLine("Please only enter numbers!");
           
-          }
-          while(true){
-               Console.Write("Enter how many numbers you would like to choose from");
-                if(int.TryParse(Console.ReadLine(),out M))
-          {
-            
-              break;
-          }
-          else Console.WriteLine("Please only enter numbers!");
-          
-
-          }
-
-            
-          int[] secret = createNewArray(N,M);
-          printArray(secret,N);
-          while(!guess){
-              int[] userGuess = getUserInput(N);
-              guess = checkGuess(secret,userGuess,N,ref queue);
-
-            
-          }
           
 
 
@@ -97,7 +82,7 @@ namespace COMP1003Mastermind
 
             }
             else{
-                for(int i = 0;i<= q.back;i++){
+                for(int i = 0;i<q.back;i++){
                     Console.Write("Guess " + (i+1) + ": ");
                     for(int j= 0; j<N; j++){
                         Console.Write( q.data[q.back][j] + " ");
@@ -107,11 +92,12 @@ namespace COMP1003Mastermind
                 }
             }
         }
+        //Checks the user guess and compares it with the secret answer
         static bool checkGuess(int[] secret, int[] userGuess,int N,  ref Queue q){
             int[] guessArray = cloneArray(userGuess,N);
             int black = 0;
             int white = 0;
-            
+            //Loops through array to get black peg 
             for(int i = 0; i<N; i++){
                
                     if (secret[i] == userGuess[i])
@@ -125,7 +111,7 @@ namespace COMP1003Mastermind
                             if(secret[i] == userGuess[j])
                             {
                                 white++;
-                                userGuess[j] = 0;
+                                userGuess[j] = 0; //If white peg is found, mark the postion as 0 so it cant count for another number later in the array
                             }
                         }
                     }
@@ -151,6 +137,9 @@ namespace COMP1003Mastermind
           return false;
         }
 
+//Creates a copy of an array as making a shallow copy means changes affect both
+
+
         static int[] cloneArray(int[] userGuess, int N)
         {
             int[] clone = new int[N];
@@ -159,6 +148,48 @@ namespace COMP1003Mastermind
                 clone[i] = userGuess[i];
             }
             return clone;
+        }
+        static void setup(ref int N, ref int M)
+        {
+    while(true){
+          Console.Write("Enter how many positions you would like");
+          if(int.TryParse(Console.ReadLine(),out N))
+          {
+            
+              break;
+          }
+          else  Console.WriteLine("Please only enter numbers!");
+          
+          }
+          while(true){
+               Console.Write("Enter how many numbers you would like to choose from");
+                if(int.TryParse(Console.ReadLine(),out M))
+          {
+            
+              break;
+          }
+          else Console.WriteLine("Please only enter numbers!");
+          
+
+          }
+          
+        }
+        static void gameLoop(int[] secret,int N){
+            Queue queue = new Queue();
+            bool guess = false;
+             while(!guess){
+              int[] userGuess = getUserInput(N);
+              guess = checkGuess(secret,userGuess,N,ref queue);
+
+            
+          }
+        }
+
+        static bool replay(){
+            Console.WriteLine("Would you like to replay? Enter y/n: ");
+          string uReplay = Console.ReadLine();
+          if(uReplay == "y") return true;
+          else return false;
         }
     }
     }
